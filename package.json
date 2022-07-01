@@ -1,0 +1,21 @@
+{
+  "name": "pay-with-tweet",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "npx ts-node app.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "crypto-js": "^4.1.1",
+    "dotenv": "^16.0.1",
+    "fs": "^0.0.1-security",
+    "twitter-api-sdk": "^1.0.9"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13"
+  }
+}
