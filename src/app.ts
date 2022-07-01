@@ -1,25 +1,26 @@
+import express, {Request, Response, NextFunction} from "express";
+import getUserTweets from "./getTweets";
+
 require("dotenv").config();
 const fs = require("fs");
-const express = require("express");
 const CryptoJS = require("crypto-js");
 const hmacSHA256 = require("crypto-js/hmac-sha256");
-
-import getUserTweets from "./src/getTweets";
-
 const app = require("express")();
-const port = process.env.PORT || 8000;
+
 app.use(express.json());
 
-app.post("/authorize", (req: Request, res: Response) => {
-  const signature = req.headers.get("x-commercelayer-signature");
+app.post("/authorize", (req: Request, res: Response, next: NextFunction) => {
+  const signature = req.headers["x-commercelayer-signature"];
   const hash = hmacSHA256(
     JSON.stringify(req.body),
     process.env.CL_SHARED_SECRET
   );
+  res.status(200).send(hash.toString());
   const encode = hash.toString(CryptoJS.enc.Base64);
   if (req.method === "POST" && signature === encode) {
     const payload = req.body;
     console.log(payload);
+    // testing
     const orderNumber = "123456789";
 
     getUserTweets().then((tweets) => {
@@ -55,8 +56,6 @@ app.post("/token", (req: Request, res: Response) => {
   console.log(req.body);
 });
 
-async function checkOrderMatch(tweets: any[]) {}
-
-app.listen(port, () => {
-  console.log(`Listening at http://localhost:${port}`);
+app.listen(() => {
+  console.log(`Listening at http://localhost:${process.env.PORT || 8000}`);
 });
