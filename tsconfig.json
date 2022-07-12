@@ -7,10 +7,11 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "outDir": "dist",
-    "typeRoots" : ["./types", "./node_modules/@types"]
+    "outDir": "./dist",
+    "typeRoots" : ["typings", "./node_modules/@types"]
   },
   "include": [
-    "src/*"
+    "src/*",
+    "typings/*"
   ]
 }

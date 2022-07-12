@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "npx ts-node src/app.ts",
+    "build": "npx tsc",
+    "start": "npm run build && nodemon dist/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -13,9 +14,11 @@
     "crypto-js": "^4.1.1",
     "dotenv": "^16.0.1",
     "fs": "^0.0.1-security",
+    "nodemon": "^2.0.19",
     "twitter-api-sdk": "^1.0.9"
   },
   "devDependencies": {
+    "@types/node": "^18.0.3",
     "@types/express": "^4.17.13"
   }
 }

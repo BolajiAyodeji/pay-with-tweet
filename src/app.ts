@@ -1,61 +1,101 @@
-import express, {Request, Response, NextFunction} from "express";
-import getUserTweets from "./getTweets";
-
 require("dotenv").config();
+import express, { Request, Response } from "express";
+import getTweets from "./getTweets";
+
 const fs = require("fs");
 const CryptoJS = require("crypto-js");
 const hmacSHA256 = require("crypto-js/hmac-sha256");
 const app = require("express")();
+const port = process.env.PORT || 9000;
 
-app.use(express.json());
+interface tweetUsers {
+  id: string;
+  username: string;
+  name: string;
+  email: string;
+  tweet: string;
+  created_at: string | undefined;
+}
 
-app.post("/authorize", (req: Request, res: Response, next: NextFunction) => {
+app.use(
+  express.json({
+    limit: "5mb",
+    verify: (req, res, buf) => {
+      req.rawBody = buf.toString();
+    }
+  })
+);
+
+app.post("/authorize", (req: Request, res: Response) => {
   const signature = req.headers["x-commercelayer-signature"];
-  const hash = hmacSHA256(
-    JSON.stringify(req.body),
-    process.env.CL_SHARED_SECRET
-  );
-  res.status(200).send(hash.toString());
+  const hash = hmacSHA256(req.rawBody, process.env.CL_SHARED_SECRET);
   const encode = hash.toString(CryptoJS.enc.Base64);
+
   if (req.method === "POST" && signature === encode) {
     const payload = req.body;
-    console.log(payload);
-    // testing
-    const orderNumber = "123456789";
 
-    getUserTweets().then((tweets) => {
-      tweets.forEach((tweet) => {
-        if (tweet.text.includes(orderNumber)) {
-          console.log(tweet.text);
-          return true;
-        } else {
-          return false;
-        }
+    payload.included.map((order: any) => {
+      const startTime = order.attributes.created_at;
+      const endTime = new Date(
+        new Date(startTime).getTime() + 60000
+      ).toISOString();
+      const orderNumber = order.attributes.number;
+      const customerEmail = order.attributes.customer_email;
+      const amountCents = order.attributes.subtotal_taxable_amount_cents;
+      const transactionToken = order.attributes.token;
+
+      getTweets(startTime, endTime).then((data) => {
+        const tweets = data.tweets;
+        const users = data.users;
+
+        tweets.forEach((tweet) => {
+          if (tweet.text.includes(orderNumber.toString())) {
+            const customerData: tweetUsers[] = [];
+            const user = users.find((u) => u.id === tweet.author_id);
+            if (user) {
+              customerData.push({
+                id: user.id,
+                username: user.username,
+                name: user.name,
+                email: customerEmail,
+                tweet: tweet.text,
+                created_at: tweet.created_at
+              });
+            }
+            console.log(customerData);
+            res.status(200).json({
+              success: true,
+              data: {
+                transaction_token: transactionToken,
+                amount_cents: amountCents,
+                metadata: {
+                  ...customerData
+                }
+              }
+            });
+          } else {
+            res.status(422).json({
+              success: false,
+              data: {
+                transaction_token: transactionToken,
+                amount_cents: amountCents,
+                error: {
+                  code: "404",
+                  message: `Order number: ${orderNumber} not found in tweets`
+                }
+              }
+            });
+          }
+        });
       });
     });
   } else {
     res.status(401).json({
-      error: "Unauthorized: Invalid signature",
+      error: "Unauthorized: Invalid signature"
     });
   }
 });
 
-app.post("/capture", (req: Request, res: Response) => {
-  console.log(req.body);
-});
-
-app.post("/void", (req: Request, res: Response) => {
-  console.log(req.body);
-});
-
-app.post("/refund", (req: Request, res: Response) => {
-  console.log(req.body);
-});
-
-app.post("/token", (req: Request, res: Response) => {
-  console.log(req.body);
-});
-
-app.listen(() => {
-  console.log(`Listening at http://localhost:${process.env.PORT || 8000}`);
+app.listen(port, () => {
+  console.log(`Listening at http://localhost:${port}`);
 });
