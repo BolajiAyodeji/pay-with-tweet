@@ -4,6 +4,7 @@ import { Client } from "twitter-api-sdk";
 const client = new Client(process.env.TW_BEARER_TOKEN as string);
 const clTwitterId = process.env.CL_TWITTER_ID as string;
 
+// Get tweets and users that mentions the clTwitterId
 async function getTweets(startTime: string, endTime: string) {
   const mentions = await client.tweets.usersIdMentions(clTwitterId, {
     start_time: startTime,
