@@ -2,7 +2,6 @@ require("dotenv").config();
 import express, { Request, Response } from "express";
 import getTweets from "./getTweets";
 
-const fs = require("fs");
 const CryptoJS = require("crypto-js");
 const hmacSHA256 = require("crypto-js/hmac-sha256");
 const app = require("express")();
