@@ -115,6 +115,8 @@ app.post("/authorize", (req: Request, res: Response) => {
   }
 });
 
+module.exports = app;
+
 app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}`);
 });
