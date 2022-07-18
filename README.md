@@ -2,8 +2,6 @@
 
 A demo Pay With Tweet external payment gateway. To get started and learn more about this demo, kindly read the comprehensive tutorial on [Commerce Layer's blog](#).
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FBolajiAyodeji%2Fpay-with-tweet&env=CL_SHARED_SECRET,CL_TWITTER_ID,TW_BEARER_TOKEN&envDescription=Add%20your%20Commerce%20Layer%20payment%20gateway's%20shared%20secret%2C%20Twitter%20account%20ID%2C%20and%20Twitter%20bearer%20token.&redirect-url=https%3A%2F%2Fcommercelayer.io%2Fdevelopers)
-
 ---
 
 Update the `.env.template` file or add your credentials in a `.env` file:
