@@ -4,8 +4,11 @@
   "description": "Commerce Layer Pay With Tweet demo external payment gateway.",
   "main": "app.js",
   "scripts": {
-    "build": "npx tsc-watch",
-    "start": "nodemon dist/app.js",
+    "build": "npx tsc",
+    "start": "node dist/app.js",
+    "dev": "npm run build:watch & npm run start:watch",
+    "build:watch": "npx tsc-watch",
+    "start:watch": "nodemon dist/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Bolaji Ayodeji <bolaji@commercelayer.io>",

@@ -12,10 +12,10 @@ CL_TWITTER_ID=""
 TW_BEARER_TOKEN=""
 ```
 
-Start the local server:
+Start the local server in development mode:
 
 ```bash
-npm run start
+npm run dev
 ```
 
 Start a ngrok HTTP tunnel listening for HTTP/HTTPS traffic on port 9000:
