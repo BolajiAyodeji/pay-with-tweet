@@ -1,6 +1,6 @@
 # pay-with-tweet
 
-A demo Pay With Tweet external payment gateway. To get started and learn more about this demo, kindly read the comprehensive tutorial on [Commerce Layer's blog](#).
+A demo Pay With Tweet external payment gateway. To get started and learn more about this demo, kindly read the comprehensive tutorial on [Commerce Layer's blog](https://commercelayer.io/blog/building-an-external-payment-gateway-with-twitter-api).
 
 ---
 
