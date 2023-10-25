@@ -14,7 +14,7 @@
   "author": "Bolaji Ayodeji <bolaji@commercelayer.io>",
   "license": "MIT",
   "dependencies": {
-    "crypto-js": "^4.1.1",
+    "crypto-js": "^4.2.0",
     "dotenv": "^16.0.1",
     "nodemon": "^2.0.19",
     "tsc-watch": "^5.0.3",
